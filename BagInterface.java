@@ -60,4 +60,4 @@ public interface BagInterface<T> {
      */
     public T[] toArray();
 
-    }
+}
