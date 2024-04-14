@@ -40,14 +40,18 @@ public class Client
                 proceed = false;
             }
             else{
-                System.out.println("Please enter a valid option\n");
+                System.out.println("Please enter a valid option.\n");
             }
         }
         input.close();    
     }
 
     public static void makeNewFile(){
+        Scanner input = new Scanner(System.in);
+        String date = "";
         
+        System.out.println("Enter a Date (MM/DD/YYYY): "); //add a barrier so it makes sure that date is valid.
+        date = input.nextLine();
     }
 
     public static void addToFile(){
@@ -55,7 +59,7 @@ public class Client
     }
 
     public static void listDonations(){
-
+        
     }
 
     public static void removeItemFromFile(){
