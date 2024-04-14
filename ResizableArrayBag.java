@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import java.util.Arrays;
 
 public class ResizableArrayBag<T> implements BagInterface<T> {
@@ -231,3 +230,4 @@ public class ResizableArrayBag<T> implements BagInterface<T> {
         }
         return arr;
     }
+}
