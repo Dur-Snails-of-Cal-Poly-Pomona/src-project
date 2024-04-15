@@ -1,5 +1,5 @@
 //listinterface.java
-public interface listinterface<T>
+public interface ListInterface<T>
 {
     // BagInterface.java
  

@@ -2,7 +2,7 @@
 
 import java.io.Serializable;
 
-public class LinkedList<T> implements listinterface<T>, Serializable 
+public class LinkedList<T> implements ListInterface<T>, Serializable 
 {
     private Node <T> firstNode;
     private int numberOfEntries;
