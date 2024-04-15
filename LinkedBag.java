@@ -11,7 +11,7 @@ public final class LinkedBag <T> implements BagInterface <T>, Serializable
     {
         firstNode = null;
         //lastNode =null;
-        numEntries =0;
+        numEntries = 0;
     }
 
     @Override

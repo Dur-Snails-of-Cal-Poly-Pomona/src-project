@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -119,7 +122,36 @@ public class Client
     }
 
     public static void getCSV(Scanner input, EntryList entryList) {
-        
+        File csvFile = new File("entries.csv");
+        try {
+            FileWriter fileWriter = new FileWriter(csvFile, false);
+
+            fileWriter.append("Date,Number of Visitors,Donations\n");
+            for (int i = 1; i <= entryList.allEntries.getCurrentSize(); i++) {
+                Entry currentEntry = entryList.allEntries.getEntry(i);
+                fileWriter.append(currentEntry.getDate() + "," + 
+                                  currentEntry.getNumVisitors());
+                ResizableArrayBag<String> donations = currentEntry.getDonations();
+                ResizableArrayBag<String> tempBag = new ResizableArrayBag<>();
+                while (!donations.isEmpty()) {
+                    String donation = donations.remove();
+                    fileWriter.append("," + donation);
+                    tempBag.add(donation);
+                }
+                while (!tempBag.isEmpty())
+                    donations.add(tempBag.remove());
+                fileWriter.append("\n");
+            }
+
+            if (!csvFile.exists())
+                csvFile.createNewFile();
+
+            fileWriter.close();
+
+            System.out.println("Successfully saved to entries.csv!");
+        } catch (IOException e) { 
+            System.out.println("Error in saving file to csv");
+        }
     }
 
     public static void removeEntry(Scanner input, EntryList entryList) {
