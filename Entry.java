@@ -54,6 +54,6 @@ public class Entry {
             "------------" +
             "Date: " + date + "\n" +
             "Number of Visitors: " + numVisitors + "\n" +
-            "Donations" + Arrays.toString(donations.toArray()); + "\n";
+            "Donations" + Arrays.toString(donations.toArray()) + "\n";
     }
 }
