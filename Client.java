@@ -1,9 +1,10 @@
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Client
 {
+    final static String DEFAULT_FILE_NAME = "entries.txt";
+
     public static void main(String args[])
     {
         userOptions();
@@ -16,7 +17,7 @@ public class Client
         String userInput = "";
 
         String filename;
-        System.out.print("Please input a file name (ending in .txt) to create/edit (leave blank for \"entries.txt\"): ");
+        System.out.print("Please input a file name (ending in .txt) to create/edit (leave blank for \"" + DEFAULT_FILE_NAME + "\"): ");
         filename = input.nextLine().trim();
         while (filename.length() < 4 || !filename.substring(filename.length() - 4).equals(".txt")) {
             if (filename.length() == 0) {
@@ -52,7 +53,7 @@ public class Client
             else if(userInput.equals("4")){
                 removeEntry(input, entryList);
             }
-            else if (userInput.equals("Q")){
+            else if (userInput.toUpperCase().equals("Q")){
                 proceed = false;
             }
             else{
@@ -75,9 +76,9 @@ public class Client
                     System.out.print("Please input the date in the format MM/DD/YYYY: ");
                 } else {
                     try {
-                        date = LocalDate.of(Integer.parseInt(monthDayYear[0]), 
-                                            Integer.parseInt(monthDayYear[1]), 
-                                            Integer.parseInt(monthDayYear[2]));
+                        date = LocalDate.of(Integer.parseInt(monthDayYear[2]), 
+                                            Integer.parseInt(monthDayYear[0]), 
+                                            Integer.parseInt(monthDayYear[1]));
                     } catch (NumberFormatException e) {
                         System.out.print("Please use numbers to input the date in the format MM/DD/YYYY: ");
                     }
