@@ -1,14 +1,14 @@
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.security.InvalidKeyException;
 import java.time.LocalDate;
 
 public class EntryList {
-    ListInterface<Entry> allEntries;
+    LinkedList<Entry> allEntries;
     String filename;
 
     EntryList(String filenameToLoad) {
@@ -16,7 +16,13 @@ public class EntryList {
         // Load allEntries from file, make new allEntries if none found
         boolean loadSucceeded = loadFromFile(filenameToLoad);
         if (!loadSucceeded) {
-            allEntries = new /*input list type here*/<Entry>();
+            allEntries = new LinkedList<Entry>();
+            File newFile = new File(filenameToLoad);
+            try {
+                newFile.createNewFile();
+            } catch (IOException e) {
+                
+            }
         }
     }
 
@@ -25,7 +31,7 @@ public class EntryList {
         try {
             FileInputStream fin = new FileInputStream(filenameToLoad);
             ObjectInputStream ois = new ObjectInputStream(fin);
-            allEntries = (/*input list type here*/<Entry>) ois.readObject();
+            allEntries = (LinkedList<Entry>) ois.readObject();
             ois.close();
 
         } catch (IOException e) {
@@ -46,6 +52,7 @@ public class EntryList {
             oos.writeObject(allEntries);
             oos.close();
         } catch (IOException e) {
+            System.err.println(e);
             return false;
         }
 

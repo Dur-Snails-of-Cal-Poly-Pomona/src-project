@@ -1,6 +1,6 @@
-package project0semisterlongproject;
+import java.io.Serializable;
 
-public final class LinkedBag <T> implements BagInterface <T>
+public final class LinkedBag <T> implements BagInterface <T>, Serializable
 {
     private Node<T> firstNode;
     //private Node<T> lastNode;

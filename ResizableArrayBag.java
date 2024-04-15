@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class ResizableArrayBag<T> implements BagInterface<T> {
+public class ResizableArrayBag<T> implements BagInterface<T>, Serializable {
     
     private T[] bag;
     private int numberOfEntries;

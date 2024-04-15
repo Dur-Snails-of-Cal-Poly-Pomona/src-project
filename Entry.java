@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
 
-public class Entry {
+public class Entry implements Serializable {
 
     private LocalDate date;
     private int numVisitors;

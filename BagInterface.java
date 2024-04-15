@@ -1,4 +1,3 @@
-package project0semisterlongproject;
 // BagInterface.java
 public interface BagInterface<T> 
 {

@@ -1,6 +1,8 @@
-package project0semisterlongproject;
 //Node.java
-public class Node<T>
+
+import java.io.Serializable;
+
+public class Node<T> implements Serializable
 {
     private T data;
     private Node<T> next;

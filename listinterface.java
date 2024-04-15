@@ -1,4 +1,3 @@
-package project0semisterlongproject;
 //listinterface.java
 public interface listinterface<T>
 {
