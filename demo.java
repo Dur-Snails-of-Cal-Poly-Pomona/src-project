@@ -1,113 +1,94 @@
 package project0semisterlongproject.ideas;
-import java.util.Scanner;
+import java.time.LocalDate;  
 
-import project0semisterlongproject.BagInterface;
-import project0semisterlongproject.LinkedBag;
-import project0semisterlongproject.LinkedList;
-
-import java.util.*;
-
-public class demo 
+public class donationperperson 
 {
-    private static int totalVisitors = 0;
-    private static double totalMoney = 0;
-    private static int totalClothes = 0;
-    private static int totalSeeds = 0;
-    private static int totalOther = 0;
-    public static void main(String[] args) 
+    private double money;
+    private int clothes;
+    private int seeds;
+    private int other;
+    private int groupsize;
+    private String date;
+
+
+    public donationperperson()
     {
-        /*donationperperson hi = new donationperperson();
-        hi.setdonation(1,2,3,4,5);
-        hi.printString();System.out.println();*/
-
-        LinkedList<donationperperson> donations = new LinkedList<>();
-
-        Scanner scanner = new Scanner(System.in);
-        String yesno = "yes";
-
-        int entrynum =1;
-
-        System.out.println("yes to enter another entry " + entrynum);
-        yesno = scanner.nextLine();
-
-        while (yesno.equalsIgnoreCase("yes")) 
-        {
-            int numppl, clothes, seeds,other;
-            double money;
-
-            donationperperson entry = new donationperperson();
-
-            System.out.println("how many people?");
-            numppl= scanner.nextInt();
-            totalVisitors += numppl;
-            //entry.setGroupsize(numppl);
-            
-            System.out.println("how much money");
-            money = scanner.nextDouble();
-            totalMoney += money;
-            //entry.setMoney(money);
-
-            System.out.println("how many clothes?");
-            clothes= scanner.nextInt();
-            totalClothes += clothes;
-            //entry.setClothes(clothes);
-
-            System.out.println("how many seeds?");
-            seeds= scanner.nextInt();
-            totalSeeds += seeds;
-            //entry.setSeeds(seeds);
-
-            System.out.println("how many other?");
-            other= scanner.nextInt();
-            scanner.nextLine();
-            totalOther =+ other;
-            //entry.setOther(other);
-
-
-            entry.setall(money, clothes, seeds, other, numppl);
-            entry.printString();
-
-            donations.add(entry);
-
-            entrynum++;
-
-            System.out.println("yes to enter another entry " + entrynum);
-            yesno = scanner.nextLine();
-        }
-
-        //donations.printList();
-
-        for (int i=1; i <entrynum;i++)
-        {
-            printoutlistat(donations, i);
-        }
-   
-        printtotal();
-
-        scanner.close();
+        this(0,0,0,0,0);
     }
 
-    public static void printtotal()
+    public donationperperson(double money, int clothes, int seeds, int other,int groupsize)
     {
-        System.out.print("TotalVisitors " + totalVisitors +" ,");
-        System.out.print("totalMoney " + totalMoney +" ,");
-        System.out.print("totalClothes " + totalClothes +" ,");
-        System.out.print("totalSeeds " + totalSeeds +" ,");
-        System.out.println("totalOther " + totalOther +" ,");
+        this.money = money;
+        this.clothes = clothes;
+        this.seeds = seeds;
+        this.other = other;
+        this.groupsize = groupsize;
+        date = LocalDate.now().toString();
+    }
+
+    public void setall(double money, int clothes, int seeds, int other, int groupsize)
+    {
+        this.money = money;
+        this.clothes = clothes;
+        this.seeds = seeds;
+        this.other = other;
+        this.groupsize = groupsize;
+        date = LocalDate.now().toString();
+    }
+    public double getMoney() 
+    {
+        return money;
+    }
+    public void setMoney(double money) 
+    {
+        this.money = money;
+    }
+    public int getClothes() 
+    {
+        return clothes;
+    }
+    public void setClothes(int clothes) 
+    {
+        this.clothes = clothes;
+    }
+    public int getSeeds() 
+    {
+        return seeds;
+    }
+    public void setSeeds(int seeds) 
+    {
+        this.seeds = seeds;
+    }
+    public int getOther() 
+    {
+        return other;
+    }
+    public void setOther(int other) 
+    {
+        this.other = other;
     }
 
 
-    public static void printoutlistat (LinkedList<donationperperson> donations, int index) 
+
+    public int getGroupsize() 
     {
-        donationperperson entry = donations.getEntry(index);
-        if (entry != null) 
-        {
-            System.out.print(index + ": ");
-            entry.printString();
-        } else 
-        {
-            System.out.println("Entry at position " + index + " does not exist.");
-        }
+        return groupsize;
     }
-    
+
+    public void setGroupsize(int groupsize) 
+    {
+        this.groupsize = groupsize;
+    }
+
+    @Override
+    public String toString() 
+    {
+        return "[money=" + money + ", clothes=" + clothes + ", seeds=" + seeds + ", other=" + other + ", groupsize=" + groupsize + "]\t" + date;
+    }
+
+    public void printString() 
+    {
+        System.out.println("[money=" + money + ", clothes=" + clothes + ", seeds=" + seeds + ", other=" + other+ ", groupsize=" + groupsize  + "]\t"+ date);
+    }
+
 }
