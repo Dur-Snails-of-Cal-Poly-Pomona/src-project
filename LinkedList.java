@@ -1,6 +1,8 @@
-package project0semisterlongproject;
 //linkedlist.java
-public class LinkedList<T> implements listinterface<T> 
+
+import java.io.Serializable;
+
+public class LinkedList<T> implements ListInterface<T>, Serializable 
 {
     private Node <T> firstNode;
     private int numberOfEntries;
@@ -199,7 +201,6 @@ public class LinkedList<T> implements listinterface<T>
         return array;
     }
 
-
     public void printListall()
     {
         System.out.println("====");
@@ -210,6 +211,5 @@ public class LinkedList<T> implements listinterface<T>
         System.out.println("====");
         System.out.println();
     }
-
-
 }
+

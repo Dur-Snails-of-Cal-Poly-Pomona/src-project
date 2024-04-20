@@ -118,7 +118,18 @@ public class Client
     }
 
     public static void displayEntries(Scanner input, EntryList entryList) {
+        String filename;
 
+        System.out.print("Please input a csv file name (ending in .csv) to create/edit (leave blank for entries.csv): ");
+        filename = input.nextLine().trim();
+        while (filename.length() < 4 || !filename.substring(filename.length() - 4).equals(".csv")) {
+            if (filename.length() == 0) {
+                filename = "entries.csv";
+            } else {
+                System.out.print("File name must end in \".csv\", please try again: ");
+                filename = input.nextLine().trim();
+            }
+        }
     }
 
     public static void getCSV(Scanner input, EntryList entryList) {
