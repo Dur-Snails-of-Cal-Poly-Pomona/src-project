@@ -1,7 +1,7 @@
-package project0semisterlongproject;
+
 
 //linkedlist.java
-public class LinkedList<T> implements listinterface<T> 
+public class LinkedList<T> implements ListInterface<T> 
 {
     private Node <T> firstNode;
     private int numberOfEntries;

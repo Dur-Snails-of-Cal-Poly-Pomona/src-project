@@ -68,7 +68,7 @@ public class Client
 
     public static void addEntry(Scanner input, EntryList entryList) {
         LocalDate date = null;
-        System.out.print("\nEnter a Date (MM/DD/YYYY), leave blank for today: "); //add a barrier so it makes sure that date is valid.
+        System.out.print("\nEnter a Date (MM/DD/YYYY), leave blank for today: "); 
         do {
             String dateInput = input.nextLine().trim();
             if (dateInput.length() == 0) {
@@ -118,16 +118,41 @@ public class Client
     }
 
     public static void displayEntries(Scanner input, EntryList entryList) {
-        String filename;
-
-        System.out.print("Please input a csv file name (ending in .csv) to create/edit (leave blank for entries.csv): ");
-        filename = input.nextLine().trim();
-        while (filename.length() < 4 || !filename.substring(filename.length() - 4).equals(".csv")) {
-            if (filename.length() == 0) {
-                filename = "entries.csv";
+        LocalDate date = null;
+        
+        System.out.print("\nEnter a Date (MM/DD/YYYY), leave blank for today: "); 
+        do {
+            String dateInput = input.nextLine().trim();
+            if (dateInput.length() == 0) {
+                date = LocalDate.now();
             } else {
-                System.out.print("File name must end in \".csv\", please try again: ");
-                filename = input.nextLine().trim();
+                String[] monthDayYear = dateInput.split("/");
+                if (monthDayYear.length != 3) {
+                    System.out.print("Please input the date in the format MM/DD/YYYY: ");
+                } else {
+                    try {
+                        date = LocalDate.of(Integer.parseInt(monthDayYear[2]), 
+                                            Integer.parseInt(monthDayYear[0]), 
+                                            Integer.parseInt(monthDayYear[1]));
+                    } catch (NumberFormatException e) {
+                        System.out.print("Please use numbers to input the date in the format MM/DD/YYYY: ");
+                    }
+                }
+            }
+        } while (date == null);
+
+        System.out.println("All Entries with the Date: " + date);
+
+        for(int i = 0; i < entryList.allEntries.getCurrentSize()+1; i++)
+        {
+            Entry entry = entryList.allEntries.getEntry(i);
+            if(entryList.allEntries.getEntry(i) == null)
+            {
+
+            }
+            else if(entryList.allEntries.getEntry(i).getDate().equals(date))
+            {
+                System.out.println(entryList.allEntries.getEntry(i));   
             }
         }
     }

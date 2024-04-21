@@ -1,4 +1,3 @@
-package project0semisterlongproject;
 //Node.java
 public class Node<T>
 {
