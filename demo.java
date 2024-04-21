@@ -27,17 +27,19 @@ public class demo
 
             farm.showsummary();
            
-            System.out.println("Hello! would you choose to donate to us today? yes/no");
+            System.out.println("Hello! how do you want to interact with this donationbox?\n(d to donate)(r to remove entry) (c to clear)(e to exit)");
             answer = scanner.nextLine();
 
-            if (answer.equals("yes"))
+            if (answer.equals("d"))
             {
                 String moredonations = "yes";
 
                 donation entry = new donation();
 
                 System.out.println("How many people are in your group so far?");
-                numppl = scanner.nextInt();
+                //numppl = scanner.nextInt();
+                //scanner.nextLine();
+                numppl = b.readValidInteger(scanner);
                 scanner.nextLine();
 
                 entry.setGroupsize(numppl);
@@ -50,25 +52,26 @@ public class demo
                     if (answer.equalsIgnoreCase("a"))
                     {
                         System.out.print("enter the amount of money you want to donate: ");
-                        money = scanner.nextDouble();scanner.nextLine();
-                        entry.setMoney(money);
+                       // money = scanner.nextDouble();scanner.nextLine();
+                       money = b.readValidInteger(scanner);scanner.nextLine();
+                       entry.setMoney(money);
                     }
                     else if(answer.equalsIgnoreCase("b"))
                     {
                         System.out.print("enter the amount of clothes you want to donate: ");
-                        clothes = scanner.nextInt();scanner.nextLine();
+                        clothes = b.readValidInteger(scanner);scanner.nextLine();
                         entry.setClothes(clothes);
                     }
                     else if(answer.equalsIgnoreCase("c"))
                     {
                         System.out.print("enter the amount of plants/seeds you want to donate: ");
-                        seeds = scanner.nextInt();scanner.nextLine();
+                        seeds = b.readValidInteger(scanner);scanner.nextLine();
                         entry.setSeeds(seeds);
                     }
                     else if(answer.equalsIgnoreCase("d"))
                     {
                         System.out.print("enter the amount of miscileanious items you want to donate: ");
-                        other = scanner.nextInt();scanner.nextLine();
+                        other = b.readValidInteger(scanner);scanner.nextLine();
                         entry.setOther(other);
                     }
                     else if(answer.equalsIgnoreCase("x"))
@@ -83,17 +86,25 @@ public class demo
                     }
 
                 }
-
-
             }
-           else
+           else if (answer.equals("r"))
            {
-            break;
+            farm.remove(farm.getCurrentSize());
+           }
+           else if (answer.equals("c"))
+           {
+            farm.clearDonations();
+           }
+           else if (answer.equals("e"))
+           {
+            System.out.println("Thank You");
+            farm.showsummary();
+            again = "x";
            }
             //System.out.println("do you want to exit? press anything other than x to continue running");
             //again = scanner.nextLine();
 
-
+            scanner.nextLine();
         }
         scanner.close();
 

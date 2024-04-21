@@ -38,6 +38,7 @@ public class donationlist<T> extends LinkedList<donation>
         totalOther = 0;
         numberOfEntries = 0;
         super.clear();
+        System.out.println("Donations have been cleared");
     }
     
     
@@ -58,6 +59,31 @@ public class donationlist<T> extends LinkedList<donation>
         numberOfEntries++;
     }
 
+    @Override
+    public donation remove(int givenPosition)
+    {
+       
+        if (this.isEmpty() || numberOfEntries <= 0)
+        {
+            System.out.println("there is nothing to remove");
+            return null;
+        }
+        else
+        {
+            donation result = super.remove(givenPosition);
+            totalVisitors -= result.getGroupsize();
+            totalMoney -= result.getMoney();
+            totalClothes -= result.getClothes();
+            totalSeeds -= result.getSeeds();
+            totalOther -= result.getOther();
+
+
+            System.out.println("Donation # "+ numberOfEntries + " has been removed. " + result.toString());
+
+            numberOfEntries--;
+            return result;
+        }
+    }
 
 
     public static void printtotal()
