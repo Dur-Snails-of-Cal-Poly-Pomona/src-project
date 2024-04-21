@@ -1,4 +1,4 @@
-package project0semisterlongproject.ideas;
+// package project0semisterlongproject.ideas;
 
 public class donationperperson 
 {

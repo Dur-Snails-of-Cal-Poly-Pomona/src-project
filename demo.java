@@ -1,9 +1,9 @@
-package project0semisterlongproject.ideas;
+// package project0semisterlongproject.ideas;
 import java.util.Scanner;
 
-import project0semisterlongproject.BagInterface;
-import project0semisterlongproject.LinkedBag;
-import project0semisterlongproject.LinkedList;
+// import project0semisterlongproject.BagInterface;
+// import project0semisterlongproject.LinkedBag;
+// import project0semisterlongproject.LinkedList;
 
 import java.util.*;
 

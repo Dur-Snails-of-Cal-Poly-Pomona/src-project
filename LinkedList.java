@@ -192,7 +192,6 @@ public class LinkedList<T> implements ListInterface<T>, Serializable
         Node <T> counterNode = firstNode;
         while ((index < numberOfEntries) && (counterNode != null))
         {
-
             array[index] = counterNode.getData();
             index++;
             counterNode = counterNode.getNextNode();
