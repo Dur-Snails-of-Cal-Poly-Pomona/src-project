@@ -1,8 +1,6 @@
+package project0semisterlongproject;
 //Node.java
-
-import java.io.Serializable;
-
-public class Node<T> implements Serializable
+public class Node<T>
 {
     private T data;
     private Node<T> next;
@@ -13,6 +11,7 @@ public class Node<T> implements Serializable
         this.next = null;
     }
     
+    @SuppressWarnings("unused")
     private Node(T dataPortion, Node<T> nextNode)
     {
         this.data = dataPortion;
