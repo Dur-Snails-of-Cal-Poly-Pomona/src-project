@@ -99,7 +99,7 @@ public class Client
         System.out.println("\nEntry added " + (savedSuccessfully ?  "and saved successfully to " + entryList.filename + "!"  : "but was unable to save."));
     }
 
-     public static void editEntry(LocalDate date, Entry entry, int entryIndex, Scanner input, EntryList entryList) {
+    public static void editEntry(LocalDate date, Entry entry, int entryIndex, Scanner input, EntryList entryList) {
         boolean proceed = true;
 
         while (proceed) {
@@ -267,16 +267,21 @@ public class Client
     }
 
     public static void displayEntries(Scanner input, EntryList entryList) {
-        String filename;
+        System.out.print("\nEnter a Date (MM/DD/YYYY), leave blank for today: "); 
+        LocalDate date = promptDate(input, true);
 
-        System.out.print("Please input a csv file name (ending in .csv) to create/edit (leave blank for entries.csv): ");
-        filename = input.nextLine().trim();
-        while (filename.length() < 4 || !filename.substring(filename.length() - 4).equals(".csv")) {
-            if (filename.length() == 0) {
-                filename = "entries.csv";
-            } else {
-                System.out.print("File name must end in \".csv\", please try again: ");
-                filename = input.nextLine().trim();
+        System.out.println("All Entries with the Date: " + date);
+
+        for(int i = 0; i < entryList.allEntries.getCurrentSize()+1; i++)
+        {
+            Entry entry = entryList.allEntries.getEntry(i);
+            if(entryList.allEntries.getEntry(i) == null)
+            {
+
+            }
+            else if(entryList.allEntries.getEntry(i).getDate().equals(date))
+            {
+                System.out.println(entryList.allEntries.getEntry(i));   
             }
         }
     }

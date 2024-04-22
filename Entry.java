@@ -52,9 +52,9 @@ public class Entry implements Serializable {
 
     public String toString() {
         return "Entry:\n" +
-            "------------" +
+            "------------\n" +
             "Date: " + date + "\n" +
             "Number of Visitors: " + numVisitors + "\n" +
-            "Donations" + Arrays.toString(donations.toArray()) + "\n";
+            "Donations: " + Arrays.toString(donations.toArray()) + "\n";
     }
 }

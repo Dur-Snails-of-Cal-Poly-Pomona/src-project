@@ -1,123 +1,124 @@
-// package project0semisterlongproject.ideas;
 import java.util.Scanner;
-
-// import project0semisterlongproject.BagInterface;
-// import project0semisterlongproject.LinkedBag;
-// import project0semisterlongproject.LinkedList;
 
 import java.util.*;
 
 public class demo 
 {
-    private static int totalVisitors = 0;
-    private static double totalMoney = 0;
-    private static int totalClothes = 0;
-    private static int totalSeeds = 0;
-    private static int totalOther = 0;
-    private static int entrynum =1;
+
     public static void main(String[] args) 
     {
-
-
-        LinkedList<donationperperson> donations = new LinkedList<>();
-
-        /*donationperperson kyle = new donationperperson();
-        kyle.setall(5.0,1,2,3,1);entrynum++;
-        donations.add(kyle);
-        donationperperson matthew = new donationperperson();
-        matthew.setall(2,0,0,3,1);entrynum++;
-        donations.add(matthew); 
-        donationperperson judy = new donationperperson();
-        judy.setall(7,0,0,0,1);entrynum++;
-        donations.add(judy);*/       
-        
-                 
-         
+        donationlist <donation> farm = new donationlist<>();
 
         Scanner scanner = new Scanner(System.in);
-        String yesno = "yes";
-
-        System.out.println("yes to enter another entry. Current Entry: " + entrynum);
-        yesno = scanner.nextLine();
-
-        while (yesno.equalsIgnoreCase("yes")) 
+        String again = "y";
+        
+        while (!again.equalsIgnoreCase("x"))
         {
             int numppl, clothes, seeds,other;
             double money;
+            String answer;
 
-            donationperperson entry = new donationperperson();
+            farm.showsummary();
+           
+            System.out.println("Hello! how do you want to interact with this donationbox?\n(d to donate)(r to remove entry) (c to clear)(e to exit)");
+            answer = scanner.nextLine();
 
-            System.out.println("how many people?");
-            numppl= scanner.nextInt();
-            totalVisitors += numppl;
-            //entry.setGroupsize(numppl);
-            
-            System.out.println("how much money");
-            money = scanner.nextDouble();
-            totalMoney += money;
-            //entry.setMoney(money);
+            if (answer.equals("d"))
+            {
+                String moredonations = "yes";
 
-            System.out.println("how many clothes?");
-            clothes= scanner.nextInt();
-            totalClothes += clothes;
-            //entry.setClothes(clothes);
+                donation entry = new donation();
 
-            System.out.println("how many seeds?");
-            seeds= scanner.nextInt();
-            totalSeeds += seeds;
-            //entry.setSeeds(seeds);
+                System.out.println("How many people are in your group so far?");
+                //numppl = scanner.nextInt();
+                //scanner.nextLine();
+                numppl = b.readValidInteger(scanner);
+                scanner.nextLine();
 
-            System.out.println("how many other?");
-            other= scanner.nextInt();
+                entry.setGroupsize(numppl);
+                while (!moredonations.equals("no"))
+                {
+                    entry.printString();
+                    System.out.println("okay great! please choose the type of donation!\nA=money\nB=Clothes\nC=seeds/Plants\nD=other items\npress X to complete your donations");
+                            
+                    answer = scanner.nextLine();
+                    if (answer.equalsIgnoreCase("a"))
+                    {
+                        System.out.print("enter the amount of money you want to donate: ");
+                       // money = scanner.nextDouble();scanner.nextLine();
+                       money = b.readValidInteger(scanner);scanner.nextLine();
+                       entry.setMoney(money);
+                    }
+                    else if(answer.equalsIgnoreCase("b"))
+                    {
+                        System.out.print("enter the amount of clothes you want to donate: ");
+                        clothes = b.readValidInteger(scanner);scanner.nextLine();
+                        entry.setClothes(clothes);
+                    }
+                    else if(answer.equalsIgnoreCase("c"))
+                    {
+                        System.out.print("enter the amount of plants/seeds you want to donate: ");
+                        seeds = b.readValidInteger(scanner);scanner.nextLine();
+                        entry.setSeeds(seeds);
+                    }
+                    else if(answer.equalsIgnoreCase("d"))
+                    {
+                        System.out.print("enter the amount of miscileanious items you want to donate: ");
+                        other = b.readValidInteger(scanner);scanner.nextLine();
+                        entry.setOther(other);
+                    }
+                    else if(answer.equalsIgnoreCase("x"))
+                    {
+                        System.out.println("Thanks!");
+                        moredonations = "no";
+                        farm.add(entry);
+                    }
+                    else
+                    {
+                        System.out.println("that wasnt right");
+                    }
+
+                }
+            }
+           else if (answer.equals("r"))
+           {
+            farm.remove(farm.getCurrentSize());
+           }
+           else if (answer.equals("c"))
+           {
+            farm.clearDonations();
+           }
+           else if (answer.equals("e"))
+           {
+            System.out.println("Thank You");
+            farm.showsummary();
+            again = "x";
+           }
+            //System.out.println("do you want to exit? press anything other than x to continue running");
+            //again = scanner.nextLine();
+
             scanner.nextLine();
-            totalOther =+ other;
-            //entry.setOther(other);
-
-
-            entry.setall(money, clothes, seeds, other, numppl);
-            entry.printString();
-
-            donations.add(entry);
-
-            entrynum++;
-
-            System.out.println("yes to enter another entry. Current Entry:" + entrynum);
-            yesno = scanner.nextLine();
         }
-
-        //donations.printList();
-
-        for (int i=1; i <entrynum;i++)
-        {
-            printoutlistat(donations, i);
-        }
-   
-        printtotal();
-
         scanner.close();
-    }
 
-    public static void printtotal()
-    {
-        System.out.print("TotalVisitors " + totalVisitors +" ,");
-        System.out.print("totalMoney " + totalMoney +" ,");
-        System.out.print("totalClothes " + totalClothes +" ,");
-        System.out.print("totalSeeds " + totalSeeds +" ,");
-        System.out.println("totalOther " + totalOther +" ,");
-    }
+        
 
 
-    public static void printoutlistat (LinkedList<donationperperson> donations, int index) 
-    {
-        donationperperson entry = donations.getEntry(index);
-        if (entry != null) 
-        {
-            System.out.print(index + ": ");
-            entry.printString();
-        } else 
-        {
-            System.out.println("Entry at position " + index + " does not exist.");
-        }
+
+       
+
+
+
     }
     
 }
+
+/*
+        farm.getcreationDate();
+        farm.gettotalEntries();
+        donation kyle = new donation();
+        kyle.setall(5.0,1,2,3,1);
+        farm.add(kyle);
+        farm.printListall();
+        farm.printtotal();
+ */
