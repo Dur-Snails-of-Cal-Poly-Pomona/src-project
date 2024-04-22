@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Entry implements Serializable {
@@ -51,10 +52,14 @@ public class Entry implements Serializable {
     }
 
     public String toString() {
-        return "Entry:\n" +
-            "------------\n" +
-            "Date: " + date + "\n" +
-            "Number of Visitors: " + numVisitors + "\n" +
-            "Donations: " + Arrays.toString(donations.toArray()) + "\n";
+
+        String output = "Entry at " + date + ":\n" +
+            " o Number of Visitors: " + numVisitors + "\n" +
+            " o Donations:";
+
+        for (Object donation : donations.toArray())
+            output += "\n   - " + donation.toString();
+
+        return output;
     }
 }

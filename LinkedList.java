@@ -1,7 +1,10 @@
 
 
 //linkedlist.java
-public class LinkedList<T> implements ListInterface<T> 
+
+import java.io.Serializable;
+
+public class LinkedList<T> implements ListInterface<T>, Serializable
 {
     private Node <T> firstNode;
     private int numberOfEntries;

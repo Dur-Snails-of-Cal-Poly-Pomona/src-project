@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Client
@@ -36,10 +37,9 @@ public class Client
         while(proceed)
         {
             System.out.println("\nSelect an option:");
-            System.out.println("Type \"1\" To make a new entry.");
+            System.out.println("Type \"1\" To create, edit, or remove an entry.");
             System.out.println("Type \"2\" To display an entry or entries.");
             System.out.println("Type \"3\" To get a .csv (spreadsheet) file of all entries.");
-            System.out.println("Type \"4\" To remove an entry or entries.");
             System.out.println("Type \"Q\" Quit the program");
 
             userInput = input.nextLine();
@@ -52,9 +52,6 @@ public class Client
             }
             else if(userInput.equals("3")){
                 getCSV(input, entryList);
-            }
-            else if(userInput.equals("4")){
-                removeEntry(input, entryList);
             }
             else if (userInput.toUpperCase().equals("Q")){
                 proceed = false;
@@ -89,9 +86,12 @@ public class Client
         System.out.print("Enter the donations from the day, separated by commas (leave blank for none): ");
         String donationsInput = input.nextLine();
         String[] allDonations = donationsInput.split(",");
+        
         ResizableArrayBag<String> donationsBag = new ResizableArrayBag<>(allDonations.length + 5);
-        for (String donation : allDonations)
-            donationsBag.add(donation.trim());
+        for (String donation : allDonations) {
+            donation = donation.trim();
+            if (donation != "") donationsBag.add(donation);
+        }
 
         entryList.addEntry(date, numVisitors, donationsBag);
         boolean savedSuccessfully = entryList.saveToFile();
@@ -103,6 +103,8 @@ public class Client
         boolean proceed = true;
 
         while (proceed) {
+            boolean saveAfter = true;
+
             System.out.println(
                 "\nOptions:\n" +
                 "1: Add or subtract number to visitors\n" +
@@ -136,7 +138,7 @@ public class Client
                 } while (numVisitorsToAdd == null);
 
                 entry.setNumVisitors(entry.getNumVisitors() + numVisitorsToAdd);
-                System.out.println("\nSuccessfully added " + numVisitorsToAdd + " visitors (now " + entry.getNumVisitors() + ").");
+                System.out.print("\nAdded " + numVisitorsToAdd + " visitors (now " + entry.getNumVisitors() + ")");
 
             } else if (userInput.equals("2")) {
                 Integer numVisitors = null;
@@ -157,61 +159,98 @@ public class Client
                 } while (numVisitors == null);
 
                 entry.setNumVisitors(numVisitors);
-                System.out.println("\nSuccessfully set the number of visitors to " + numVisitors + ".");
+                System.out.print("\nSet the number of visitors to " + numVisitors);
 
             } else if (userInput.equals("3")) {
                 // TODO: Add donation(s) (leave blank to cancel, divide with commas)
             } else if (userInput.equals("4")) {
-                System.out.println("Are you sure you want to clear all donations? (Y or Yes for yes, anything else for no)");
+                System.out.println("\nAre you sure you want to clear all donations? (Y or Yes for yes, anything else for no)");
                 String userChoice = input.nextLine();
                 if (userChoice.toUpperCase().equals("YES") || userChoice.toUpperCase().equals("Y")) {
                     entry.getDonations().clear();
-                    System.out.println("Successfully cleared all donations for this entry.");
+                    System.out.print("\nCleared all donations for this entry ");
                 } else {
-                    System.out.println("Donations were not cleared for this entry.");
+                    System.out.println("\nDonations were not cleared for this entry.");
+                    saveAfter = false;
                 }
             } else if (userInput.equals("5")) {
-                System.out.print("Enter a new date in the format MM/DD/YYYY, leave blank for today: ");
+                System.out.print("\nEnter a new date in the format MM/DD/YYYY, leave blank for today: ");
 
                 LocalDate newDate = promptDate(input, true);
                 
                 Entry entryAtNewDate = null;
                 Integer newEntryIndex = null;
-                // TODO: Make this loop backwards (& above)
-                for (int i = 1; i <= entryList.allEntries.getCurrentSize(); i++) {
+                for (int i = entryList.allEntries.getCurrentSize(); i > 0; i--) {
                     Entry newEntry = entryList.allEntries.getEntry(i);
-                    if (entry.getDate().equals(date)) {
+                    if (newEntry != null && newEntry.getDate().equals(newDate)) {
                         entryAtNewDate = newEntry;
                         newEntryIndex = i;
                         break;
                     }
                 }
 
+
                 if (newEntryIndex == null) {
                     entry.setDate(newDate);
-                    System.out.println("Successfully changed date of entry.");
+                    System.out.print("\nChanged date of entry");
+                    proceed = false;
+                } else if (newEntryIndex == entryIndex) {
+                    System.out.println("\nThat is the same date.");
+                    saveAfter = false;
                 } else {
-                    System.out.println("There is already an entry at that date that has the following data:");
-
-                    System.out.println("\nWould you like to:\n1: Merge these entries\n2: Replace the entry at the new date\n3 or leave blank: Cancel");
+                    System.out.println("" + newEntryIndex + " " + entryIndex);
+                    System.out.println("\nThere is already an entry at that date that has the following data:\n");
+                    System.out.println(entryAtNewDate);
+                    System.out.println("\nWould you like to:\n1: Merge these entries\n2: Replace the entry at the new date\nAnything else: Cancel");
                     
+                    String dateChangeUserInput = input.nextLine();
+
+                    if (dateChangeUserInput.trim().equals("1")) {
+                        entryAtNewDate.setNumVisitors(entryAtNewDate.getNumVisitors() + entry.getNumVisitors());
+                        while (!entry.getDonations().isEmpty())
+                            entryAtNewDate.getDonations().add(entry.getDonations().remove());
+                        entryList.allEntries.remove(entryIndex);
+
+                        System.out.print("\nMerged entries");
+                        proceed = false;
+                    } else if (dateChangeUserInput.trim().equals("2")) {
+                        entryList.allEntries.replace(newEntryIndex, entry);
+                        entry.setDate(newDate);
+                        entryList.allEntries.remove(entryIndex);
+                        System.out.print("\nOverwrote entry at date with this entry");
+                        proceed = false;
+                    } else if (dateChangeUserInput.toUpperCase().equals("Q")) {
+                        System.out.println("\nDate was not changed.");
+                        saveAfter = false;
+                    }
                 }
                 
                 // TODO: Change date (if new date already has an entry: prompt to merge, replace, or cancel)
             } else if (userInput.equals("6")) {
-                System.out.println("Are you sure you want to remove this element? (Y or Yes for yes, anything else for no)");
+                System.out.println("\nAre you sure you want to remove this element? (Y or Yes for yes, anything else for no)");
                 String userChoice = input.nextLine();
                 if (userChoice.toUpperCase().equals("YES") || userChoice.toUpperCase().equals("Y")) {
                     entryList.allEntries.remove(entryIndex);
-                    System.out.println("Successfully deleted entry.");
+                    System.out.print("\nDeleted entry");
                     proceed = false;
                 } else {
-                    System.out.println("Entry was not deleted.");
+                    System.out.println("\nEntry was not deleted.");
+                    saveAfter = false;
                 }
             } else if (userInput.toUpperCase().equals("Q")) {
                 proceed = false;
+                saveAfter = false;
             } else {
                 System.out.println("Please enter a valid option.");
+                saveAfter = false;
+            }
+
+            if (saveAfter) {
+                if (entryList.saveToFile()) {
+                    System.out.println(" and saved successfully to " + entryList.filename + ".");
+                } else {
+                    System.out.println(" but was unable to save.");
+                }
             }
         }
     }
@@ -247,18 +286,18 @@ public class Client
         LocalDate date = promptDate(input, true);
         Entry entryAtDate = null;
         Integer entryIndex = null;
-        for (int i = 1; i <= entryList.allEntries.getCurrentSize(); i++) {
+        for (int i = entryList.allEntries.getCurrentSize(); i > 0; i--) {
             Entry entry = entryList.allEntries.getEntry(i);
-            if (entry.getDate().equals(date)) {
+            if (entry != null && entry.getDate().equals(date)) {
                 entryAtDate = entry;
                 entryIndex = i;
                 break;
             }
         }
         if (entryAtDate != null) {
-            System.out.println("\nThat entry already exists, and has the following data:");
+            System.out.println("\nThat entry already exists, and has the following data:\n");
 
-            // TODO: Display that entry
+            System.out.println(entryAtDate);
             
             editEntry(date, entryAtDate, entryIndex, input, entryList);
         } else {
@@ -270,20 +309,26 @@ public class Client
         System.out.print("\nEnter a Date (MM/DD/YYYY), leave blank for today: "); 
         LocalDate date = promptDate(input, true);
 
-        System.out.println("All Entries with the Date: " + date);
+        ArrayList<Entry> entriesAtDate = new ArrayList<>();
 
         for(int i = 0; i < entryList.allEntries.getCurrentSize()+1; i++)
         {
             Entry entry = entryList.allEntries.getEntry(i);
-            if(entryList.allEntries.getEntry(i) == null)
+            if(entry != null && entry.getDate().equals(date))
             {
-
-            }
-            else if(entryList.allEntries.getEntry(i).getDate().equals(date))
-            {
-                System.out.println(entryList.allEntries.getEntry(i));   
+                entriesAtDate.add(entry);  
             }
         }
+
+        if (entriesAtDate.size() == 0)
+            System.out.println("\nCould not find any entries at that date.");
+        else if (entriesAtDate.size() == 1)
+            System.out.println("\nDisplaying the entry for that date:");
+        else
+            System.out.println("\nDisplaying the " + entriesAtDate.size() + " entries for that date:");
+        
+        for (Entry entry : entriesAtDate)
+            System.out.println("\n" + entry);
     }
 
     public static void getCSV(Scanner input, EntryList entryList) {
@@ -313,13 +358,9 @@ public class Client
 
             fileWriter.close();
 
-            System.out.println("Successfully saved to entries.csv!");
+            System.out.println("\nSuccessfully saved to entries.csv!");
         } catch (IOException e) { 
             System.out.println("Error in saving file to csv");
         }
-    }
-
-    public static void removeEntry(Scanner input, EntryList entryList) {
-        
     }
 }

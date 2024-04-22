@@ -34,10 +34,13 @@ public class EntryList {
             ois.close();
 
         } catch (IOException e) {
+            // System.out.println("Error in loading file: " + e);
             return false;
         } catch (ClassCastException e) {
+            // System.out.println("Error in file content: " + e);
             return false;
         } catch (ClassNotFoundException e) {
+            // System.out.println("Error in file content: " + e);
             return false;
         }
 
@@ -51,7 +54,7 @@ public class EntryList {
             oos.writeObject(allEntries);
             oos.close();
         } catch (IOException e) {
-            System.err.println(e);
+            // System.err.println("Error in saving: " + e);
             return false;
         }
 
