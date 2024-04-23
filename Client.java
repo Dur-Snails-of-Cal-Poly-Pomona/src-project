@@ -14,6 +14,13 @@ public class Client
         userOptions();
     }
 
+    /**
+     * Prompts user to input file to load, displays main menu to user and asks for input. Calls appropriate
+     * function corresponding to user's choice.
+     * 
+     * @param input the Scanner object to read user input
+     * @param entryList the EntryList storing all the entries
+     */
     public static void userOptions()
     {
         Scanner input = new Scanner(System.in);
@@ -64,6 +71,12 @@ public class Client
         input.close();    
     }
 
+    /**
+     * Functionality for handling adding a new entry: prompts user for number of visitors and donations
+     * 
+     * @param input the Scanner object to read user input
+     * @param entryList the EntryList storing all the entries
+     */
     public static void addNewEntry(LocalDate date, Scanner input, EntryList entryList) {
         Integer numVisitors = null;
         System.out.print("Enter the number of visitors this day (leave blank for 1): ");
@@ -100,6 +113,17 @@ public class Client
         System.out.println("\nEntry added " + (savedSuccessfully ?  "and saved successfully to " + entryList.getFilename() + "."  : "but was unable to save."));
     }
 
+    /**
+     * Functionality for handling editing an existing entry: allows user to add/subtract visitors, 
+     * set visitor count, add donations to entry, clear all donations, change the date of the entry,
+     * remove the entry, or exit to main menu.
+     * 
+     * @param date the date of the entry being edited
+     * @param entry the entry being edited
+     * @param entryIndex the index in the EntryList of the entry being edited
+     * @param input the Scanner object to read user input
+     * @param entryList the EntryList storing all the entries
+     */
     public static void editEntry(LocalDate date, Entry entry, int entryIndex, Scanner input, EntryList entryList) {
         boolean proceed = true;
 
@@ -266,6 +290,12 @@ public class Client
         }
     }
 
+    /**
+     * Function to call to prompt user for a date in the format MM/DD/YYYY
+     * @param input the Scanner object to read user input
+     * @param leaveBlankForToday whether the user can leave a blank input to default to the current day
+     * @return the date input by the user
+     */
     public static LocalDate promptDate(Scanner input, boolean leaveBlankForToday) {
         LocalDate date = null;
         do {
@@ -291,6 +321,12 @@ public class Client
         return date;
     }
 
+    /**
+     * Functionality for when user chooses to add/edit entry: prompts the user for a date and 
+     * either calls addNewEntry or editEntry depending on if an entry already exists at the date
+     * @param input the Scanner object to read user input
+     * @param entryList the EntryList storing all the entries
+     */
     public static void addOrEditEntry(Scanner input, EntryList entryList) {
         System.out.print("\nEnter a Date (MM/DD/YYYY), leave blank for today: "); //add a barrier so it makes sure that date is valid.
 
@@ -314,6 +350,11 @@ public class Client
         }
     }
 
+    /**
+     * Functionality for when user chooses to display entries: prompts the user for a date and displays any entries at that date
+     * @param input the Scanner object to read user input
+     * @param entryList the EntryList storing all the entries
+     */
     public static void displayEntries(Scanner input, EntryList entryList) {
         System.out.print("\nEnter a Date (MM/DD/YYYY), leave blank for today: "); 
         LocalDate date = promptDate(input, true);
@@ -343,6 +384,11 @@ public class Client
         input.nextLine();
     }
 
+    /**
+     * Functionality for when user chooses to get a .csv file of all entries: saves all entries in entryList to a formatted .csv file
+     * @param input the Scanner object to read user input
+     * @param entryList the EntryList storing all the entries
+     */
     public static void getCSV(Scanner input, EntryList entryList) {
         File csvFile = new File("entries.csv");
         try {
