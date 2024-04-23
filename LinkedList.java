@@ -9,24 +9,29 @@ public class LinkedList<T> implements ListInterface<T>, Serializable
     private Node <T> firstNode;
     private int numberOfEntries;
     
-
+    /** Default Constructor */
     public LinkedList()
     {
         initializeDataFields();
     }
+
+    /** Removes all entries from this list. */
     public void clear()
     {
         initializeDataFields();
     }
 
+    /** Initializes the class's data fields to indicate an empty list. */ 
     private void initializeDataFields()
     {
         firstNode = null;
         numberOfEntries =0;
     }
 
-    //** */
 
+    /** Sees whether this list is empty.
+      * @return  True if the list is empty, or false if not. 
+      */
     public boolean isEmpty()
     {
      boolean result=false;
@@ -45,6 +50,9 @@ public class LinkedList<T> implements ListInterface<T>, Serializable
      return result;
     }
     
+    /** Adds a new entry to the end of this list. Entries currently in the list are unaffected. The list's size is increased by 1. 
+      * @param newEntry  The object to be added as a new entry. 
+      */
     public void add(T newEntry)
     {
         Node<T> newNode = new Node<T>(newEntry);
@@ -62,6 +70,11 @@ public class LinkedList<T> implements ListInterface<T>, Serializable
         numberOfEntries++;
     }    
 
+    /** Adds a new entry at a specified position within this list. Entries originally at and above the specified position are at the next higher position within the list. The list's size is increased by 1.       
+     * @param newPosition  An integer that specifies the desired position of the new entry.
+     * @param newEntry     The object to be added as a new entry.
+     * @throws  IndexOutOfBoundsException if either newPosition < 1 or newPosition > getLength() + 1.
+     */
     @Override
     public void add (int givenPosition, T newEntry)
     {
@@ -89,6 +102,11 @@ public class LinkedList<T> implements ListInterface<T>, Serializable
         }
     }
 
+    /** Removes the entry at a given position from this list. Entries originally at positions higher than the given position are at the next lower position within the list, and the list's size is decreased by 1.
+     * @param givenPosition  An integer that indicates the position of the entry to be removed.
+     * @return  A reference to the removed entry.
+     * @throws  IndexOutOfBoundsException if either givenPosition < 1 or givenPosition > getLength().
+     */
     @Override
     public T remove (int givenPosition)
     {
@@ -118,6 +136,11 @@ public class LinkedList<T> implements ListInterface<T>, Serializable
         }
     }
 
+    /**
+     * Gets the node at given position.
+     * @param givenPosition An integer that indicates the position of the node to be returned.
+     * @return Returns the node at the given position.
+     */
     private Node<T> getNodeAt(int givenPosition)
     {
         Node<T> currentNode = firstNode;
@@ -129,12 +152,21 @@ public class LinkedList<T> implements ListInterface<T>, Serializable
         return currentNode;
     }
     
+    /** Gets the length of this list.
+     * @return  The integer number of entries currently in the list. 
+     */
     @Override
     public int getCurrentSize() 
     {
         return numberOfEntries;
     }
     
+    /** Replaces the entry at a given position in this list.
+     * @param givenPosition  An integer that indicates the position of the entry to be replaced.
+     * @param newEntry  The object that will replace the entry at the position givenPosition.
+     * @return  The original entry that was replaced.
+     * @throws  IndexOutOfBoundsException if either givenPosition < 1 or givenPosition > getLength(). 
+     */
     @Override
     public T replace(int givenPosition, T newEntry) 
     {
@@ -152,6 +184,12 @@ public class LinkedList<T> implements ListInterface<T>, Serializable
             return null;
         }
     }
+
+    /** Retrieves the entry at a given position in this list.
+     * @param givenPosition  An integer that indicates the position of the desired entry.
+     * @return  A reference to the indicated entry.
+     * @throws  IndexOutOfBoundsException if either givenPosition < 1 or givenPosition > getLength(). 
+     */
     @Override
     public T getEntry(int givenPosition) 
     {
@@ -165,6 +203,11 @@ public class LinkedList<T> implements ListInterface<T>, Serializable
             //throw new IndexOutOfBoundsException("Illegal position given to getEntry operation.");
         }
     }
+
+    /** Sees whether this list contains a given entry.
+     * @param anEntry  The object that is the desired entry.
+     * @return  True if the list contains anEntry, or false if not. 
+     */
     @Override
     public boolean contains(T anEntry) 
     {
@@ -184,6 +227,10 @@ public class LinkedList<T> implements ListInterface<T>, Serializable
         }
         return found;
     }
+
+    /** Retrieves all entries that are in this list in the order in which they occur in the list.
+     * @return  A newly allocated array of all the entries in the list. If the list is empty, the returned array is empty. 
+     */
     @Override
     public T[] toArray() {
         @SuppressWarnings ("unchecked")
@@ -202,6 +249,9 @@ public class LinkedList<T> implements ListInterface<T>, Serializable
     }
 
 
+    /**
+     * 
+     */
     public void printListall()
     {
         int index =1;
