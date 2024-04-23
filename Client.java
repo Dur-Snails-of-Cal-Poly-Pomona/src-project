@@ -36,7 +36,8 @@ public class Client
 
         while(proceed)
         {
-            System.out.println("\nSelect an option:");
+            System.out.println("\n----------------\n");
+            System.out.println("Select an option:");
             System.out.println("Type \"1\" To create, edit, or remove an entry.");
             System.out.println("Type \"2\" To display an entry or entries.");
             System.out.println("Type \"3\" To get a .csv (spreadsheet) file of all entries.");
@@ -96,7 +97,7 @@ public class Client
         entryList.addEntry(date, numVisitors, donationsBag);
         boolean savedSuccessfully = entryList.saveToFile();
 
-        System.out.println("\nEntry added " + (savedSuccessfully ?  "and saved successfully to " + entryList.filename + "!"  : "but was unable to save."));
+        System.out.println("\nEntry added " + (savedSuccessfully ?  "and saved successfully to " + entryList.getFilename() + "."  : "but was unable to save."));
     }
 
     public static void editEntry(LocalDate date, Entry entry, int entryIndex, Scanner input, EntryList entryList) {
@@ -104,24 +105,24 @@ public class Client
 
         while (proceed) {
             boolean saveAfter = true;
-            System.out.println("\n------------------------------\n");
+            System.out.println("\n------------------------------\n\nCurrently editing:\n");
             System.out.println(entry);
             System.out.println(
-                "\nOptions:\n" +
-                "1: Add or subtract number to visitors\n" +
-                "2: Set visitor count\n" +
-                "3: Add donation(s)\n" +
-                "4: Clear all donations\n" +
-                "5: Change date\n" +
-                "6: Remove entry\n" +
-                "Q or leave blank: Back to main menu"
+                "\nEditing Options:\n" +
+                "Type \"1\" To add or subtract number to visitors\n" +
+                "Type \"2\" To set visitor count\n" +
+                "Type \"3\" To add donation(s)\n" +
+                "Type \"4\" To clear all donations\n" +
+                "Type \"5\" To change date\n" +
+                "Type \"6\" To remove entry\n" +
+                "Type \"Q\" To go back to main menu"
             );
 
             String userInput = input.nextLine();
 
             if (userInput.equals("1")) {
                 Integer numVisitorsToAdd = null;
-                System.out.print("\nEnter the number of visitors this day (leave blank for 1): ");
+                System.out.print("\nEnter the number of visitors to add (negative to subtract, leave blank for 1): ");
 
                 do {
                     String numVisitorsInput = input.nextLine().trim();
@@ -163,7 +164,16 @@ public class Client
                 System.out.print("\nSet the number of visitors to " + numVisitors);
 
             } else if (userInput.equals("3")) {
-                // TODO: Add donation(s) (leave blank to cancel, divide with commas)
+                System.out.print("\nEnter the donations to add, separated by commas (leave blank for none): ");
+                String donationsInput = input.nextLine();
+                String[] allDonations = donationsInput.split(",");
+                
+                for (String donation : allDonations) {
+                    donation = donation.trim();
+                    if (donation != "") entry.getDonations().add(donation);
+                }
+
+                System.out.print("\nAdded donations to entry");
             } else if (userInput.equals("4")) {
                 System.out.println("\nAre you sure you want to clear all donations? (Y or Yes for yes, anything else for no)");
                 String userChoice = input.nextLine();
@@ -181,8 +191,8 @@ public class Client
                 
                 Entry entryAtNewDate = null;
                 Integer newEntryIndex = null;
-                for (int i = entryList.allEntries.getCurrentSize(); i > 0; i--) {
-                    Entry newEntry = entryList.allEntries.getEntry(i);
+                for (int i = entryList.getAllEntries().getCurrentSize(); i > 0; i--) {
+                    Entry newEntry = entryList.getAllEntries().getEntry(i);
                     if (newEntry != null && newEntry.getDate().equals(newDate)) {
                         entryAtNewDate = newEntry;
                         newEntryIndex = i;
@@ -210,14 +220,14 @@ public class Client
                         entryAtNewDate.setNumVisitors(entryAtNewDate.getNumVisitors() + entry.getNumVisitors());
                         while (!entry.getDonations().isEmpty())
                             entryAtNewDate.getDonations().add(entry.getDonations().remove());
-                        entryList.allEntries.remove(entryIndex);
+                        entryList.getAllEntries().remove(entryIndex);
 
                         System.out.print("\nMerged entries");
                         proceed = false;
                     } else if (dateChangeUserInput.trim().equals("2")) {
-                        entryList.allEntries.replace(newEntryIndex, entry);
+                        entryList.getAllEntries().replace(newEntryIndex, entry);
                         entry.setDate(newDate);
-                        entryList.allEntries.remove(entryIndex);
+                        entryList.getAllEntries().remove(entryIndex);
                         System.out.print("\nOverwrote entry at date with this entry");
                         proceed = false;
                     } else if (dateChangeUserInput.toUpperCase().equals("Q")) {
@@ -231,7 +241,7 @@ public class Client
                 System.out.println("\nAre you sure you want to remove this element? (Y or Yes for yes, anything else for no)");
                 String userChoice = input.nextLine();
                 if (userChoice.toUpperCase().equals("YES") || userChoice.toUpperCase().equals("Y")) {
-                    entryList.allEntries.remove(entryIndex);
+                    entryList.getAllEntries().remove(entryIndex);
                     System.out.print("\nDeleted entry");
                     proceed = false;
                 } else {
@@ -248,7 +258,7 @@ public class Client
 
             if (saveAfter) {
                 if (entryList.saveToFile()) {
-                    System.out.println(" and saved successfully to " + entryList.filename + ".");
+                    System.out.println(" and saved successfully to " + entryList.getFilename() + ".");
                 } else {
                     System.out.println(" but was unable to save.");
                 }
@@ -287,8 +297,8 @@ public class Client
         LocalDate date = promptDate(input, true);
         Entry entryAtDate = null;
         Integer entryIndex = null;
-        for (int i = entryList.allEntries.getCurrentSize(); i > 0; i--) {
-            Entry entry = entryList.allEntries.getEntry(i);
+        for (int i = entryList.getAllEntries().getCurrentSize(); i > 0; i--) {
+            Entry entry = entryList.getAllEntries().getEntry(i);
             if (entry != null && entry.getDate().equals(date)) {
                 entryAtDate = entry;
                 entryIndex = i;
@@ -296,7 +306,7 @@ public class Client
             }
         }
         if (entryAtDate != null) {
-            System.out.println("\nThat entry already exists, and has the following data:\n");
+            System.out.println("\nThat entry already exists, now editing entry.");
             
             editEntry(date, entryAtDate, entryIndex, input, entryList);
         } else {
@@ -310,9 +320,9 @@ public class Client
 
         ArrayList<Entry> entriesAtDate = new ArrayList<>();
 
-        for(int i = 0; i < entryList.allEntries.getCurrentSize()+1; i++)
+        for(int i = 0; i < entryList.getAllEntries().getCurrentSize()+1; i++)
         {
-            Entry entry = entryList.allEntries.getEntry(i);
+            Entry entry = entryList.getAllEntries().getEntry(i);
             if(entry != null && entry.getDate().equals(date))
             {
                 entriesAtDate.add(entry);  
@@ -322,12 +332,15 @@ public class Client
         if (entriesAtDate.size() == 0)
             System.out.println("\nCould not find any entries at that date.");
         else if (entriesAtDate.size() == 1)
-            System.out.println("\nDisplaying the entry for that date:");
+            System.out.println("\n------------------------\n\nDisplaying the entry for that date:");
         else
             System.out.println("\nDisplaying the " + entriesAtDate.size() + " entries for that date:");
         
         for (Entry entry : entriesAtDate)
             System.out.println("\n" + entry);
+
+        System.out.print("\nHit enter to return to main menu.");
+        input.nextLine();
     }
 
     public static void getCSV(Scanner input, EntryList entryList) {
@@ -336,8 +349,8 @@ public class Client
             FileWriter fileWriter = new FileWriter(csvFile, false);
 
             fileWriter.append("Date,Number of Visitors,Donations\n");
-            for (int i = 1; i <= entryList.allEntries.getCurrentSize(); i++) {
-                Entry currentEntry = entryList.allEntries.getEntry(i);
+            for (int i = 1; i <= entryList.getAllEntries().getCurrentSize(); i++) {
+                Entry currentEntry = entryList.getAllEntries().getEntry(i);
                 fileWriter.append(currentEntry.getDate() + "," + 
                                   currentEntry.getNumVisitors());
                 ResizableArrayBag<String> donations = currentEntry.getDonations();
