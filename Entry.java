@@ -10,7 +10,7 @@ public class Entry implements Serializable {
     private ResizableArrayBag<String> donations;
 
     /** 
-     * Creates empty log entry
+     * Creates empty log entry with today's date, 0 visitors, and an empty bag of donations
      */
     public Entry() {
         this.date = LocalDate.now();
@@ -18,7 +18,9 @@ public class Entry implements Serializable {
         this.donations = new ResizableArrayBag<String>();
     }
     /** 
-     * @param LocalDate date,
+     * Creates empty log entry with specified date, 0 visitors, and an empty bag of donations
+     * 
+     * @param date the date for the new entry
      */
     public Entry(LocalDate date) {
         this.date = date;
@@ -27,9 +29,11 @@ public class Entry implements Serializable {
     }
 
     /** 
-     * @param LocalDate date,
-     * @param int numVisitors
-     * @param ResizableArrayBag<String> donations
+     * Creates empty log entry with specified date, specified number of visitors, and specified bag of donations
+     * 
+     * @param date the date for the new entry
+     * @param numVisitors the number of visitors for the new entry
+     * @param donations the donations for the new entry
      */
     public Entry(LocalDate date, int numVisitors, ResizableArrayBag<String> donations) {
         this.date = date;
@@ -37,13 +41,17 @@ public class Entry implements Serializable {
         this.donations = donations;
     }
     /** 
-     * @param LocalDate date
+     * Sets the date of the entry
+     * 
+     * @param date the date to change in the entry
      */
     public void setDate(LocalDate date) {
         this.date = date;
     }
     /** 
-     * @param int numVisitors
+     * Sets the number of visitors in the entry
+     * 
+     * @param numVisitors the number of visitors to change in the entry
      */
     public void setNumVisitors(int numVisitors) {
         this.numVisitors = numVisitors;
@@ -51,7 +59,9 @@ public class Entry implements Serializable {
 
     
     /** 
-     * @param donations
+     * Sets the donations in the entry
+     * 
+     * @param donations the donations to change in the entry
      */
     public void setDonations(ResizableArrayBag<String> donations) {
         this.donations = donations;
@@ -59,7 +69,9 @@ public class Entry implements Serializable {
 
     
     /** 
-     * @return LocalDate
+     * Returns the date of the entry
+     * 
+     * @return the date of the entry
      */
     public LocalDate getDate() {
         return date;
@@ -67,7 +79,9 @@ public class Entry implements Serializable {
 
     
     /** 
-     * @return int
+     * Returns the number of visitors of the entry
+     * 
+     * @return the number of visitors of the entry
      */
     public int getNumVisitors() {
         return numVisitors;
@@ -75,7 +89,9 @@ public class Entry implements Serializable {
 
     
     /** 
-     * @return ResizableArrayBag<String>
+     * Returns the donations of the entry
+     * 
+     * @return the donations of the entry
      */
     public ResizableArrayBag<String> getDonations() {
         return donations;
@@ -83,7 +99,9 @@ public class Entry implements Serializable {
 
     
     /** 
-     * @return String
+     * Returns the contents of the entry in a String format
+     * 
+     * @return the entry in String format
      */
     public String toString() {
 
