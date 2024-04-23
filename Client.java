@@ -104,7 +104,8 @@ public class Client
 
         while (proceed) {
             boolean saveAfter = true;
-
+            System.out.println("\n------------------------------\n");
+            System.out.println(entry);
             System.out.println(
                 "\nOptions:\n" +
                 "1: Add or subtract number to visitors\n" +
@@ -296,8 +297,6 @@ public class Client
         }
         if (entryAtDate != null) {
             System.out.println("\nThat entry already exists, and has the following data:\n");
-
-            System.out.println(entryAtDate);
             
             editEntry(date, entryAtDate, entryIndex, input, entryList);
         } else {
