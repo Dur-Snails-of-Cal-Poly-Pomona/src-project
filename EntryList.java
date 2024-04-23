@@ -7,8 +7,16 @@ import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 
 public class EntryList {
-    LinkedList<Entry> allEntries;
-    String filename;
+    private LinkedList<Entry> allEntries;
+    private String filename;
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public LinkedList<Entry> getAllEntries() {
+        return allEntries;
+    }
 
     EntryList(String filenameToLoad) {
         this.filename = filenameToLoad;
