@@ -1,8 +1,6 @@
 //listinterface.java
 public interface ListInterface<T>
 {
-    // BagInterface.java
- 
     /** Gets the length of this list.
      * @return  The integer number of entries currently in the list. 
      */
