@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -356,32 +357,129 @@ public class Client
      * @param entryList the EntryList storing all the entries
      */
     public static void displayEntries(Scanner input, EntryList entryList) {
-        System.out.print("\nEnter a Date (MM/DD/YYYY), leave blank for today: "); 
-        LocalDate date = promptDate(input, true);
+        boolean proceed = true;
 
-        ArrayList<Entry> entriesAtDate = new ArrayList<>();
+        while (proceed) {
+            System.out.println("\n------------------------------\n");
+            System.out.println(
+                "Display Options:\n" +
+                "Type \"1\" To display today's log entry\n" +
+                "Type \"2\" To display a specific day's log entry\n" +
+                "Type \"3\" To display a range of entries between two dates (inclusive)\n" +
+                "Type \"Q\" To go back to main menu"
+            );
 
-        for(int i = 0; i < entryList.getAllEntries().getCurrentSize()+1; i++)
-        {
-            Entry entry = entryList.getAllEntries().getEntry(i);
-            if(entry != null && entry.getDate().equals(date))
-            {
-                entriesAtDate.add(entry);  
+            String userInput = input.nextLine();
+            
+            if (userInput.equals("1")) {
+                LocalDate date = LocalDate.now();
+                Entry todayEntry = null;
+                for(int i = 0; i < entryList.getAllEntries().getCurrentSize()+1; i++)
+                {
+                    Entry entry = entryList.getAllEntries().getEntry(i);
+                    if(entry != null && entry.getDate().equals(date))
+                    {
+                        todayEntry = entry;
+                    }
+                }
+                if (!todayEntry.equals(null)) {
+                    System.out.println("\n------------------------\n\nDisplaying the entry for today:\n\n" + todayEntry);
+                    System.out.print("\nHit enter to return to display menu.");
+                    input.nextLine();
+                }
+                else {
+                    System.out.println("\nCould not find any entry for today.");
+                }
+            }
+            else if (userInput.equals("2")) {
+                System.out.print("\nEnter a Date (MM/DD/YYYY), leave blank for today: "); 
+                LocalDate date = promptDate(input, true);
+        
+                ArrayList<Entry> entriesAtDate = new ArrayList<>();
+        
+                for(int i = 0; i < entryList.getAllEntries().getCurrentSize()+1; i++)
+                {
+                    Entry entry = entryList.getAllEntries().getEntry(i);
+                    if(entry != null && entry.getDate().equals(date))
+                    {
+                        entriesAtDate.add(entry);  
+                    }
+                }
+        
+                if (entriesAtDate.size() == 0)
+                    System.out.println("\nCould not find any entries at that date.");
+                else if (entriesAtDate.size() == 1) {
+                    System.out.println("\n------------------------\n\nDisplaying the entry for that date:");
+                    for (Entry entry : entriesAtDate)
+                        System.out.println("\n" + entry);
+                    System.out.print("\nHit enter to return to display menu.");
+                    input.nextLine();
+                }
+                else {
+                    System.out.println("\nDisplaying the " + entriesAtDate.size() + " entries for that date:");
+                    for (Entry entry : entriesAtDate)
+                        System.out.println("\n" + entry);
+                    System.out.print("\nHit enter to return to display menu.");
+                    input.nextLine();
+                }
+        
+            }
+            else if (userInput.equals("3")) {
+                boolean valid = false;
+                LocalDate startDate = null;
+                LocalDate endDate = null;
+                while (!valid) {
+                    System.out.print("\nEnter the start date (MM/DD/YYYY), leave blank for today: "); 
+                    startDate = promptDate(input, true);
+                    System.out.print("\nEnter the end date (MM/DD/YYYY), leave blank for today: "); 
+                    endDate = promptDate(input, true);
+                    if (endDate.isBefore(startDate)) {
+                        System.out.println("\nEnd date must not be before the start date."); 
+                    }
+                    else if (ChronoUnit.DAYS.between(startDate, endDate) > 183) {
+                        System.out.println("\nTime frame too large. Please choose a range less than or equal to 6 months."); 
+                    }
+                    else {
+                        valid = true;
+                    }
+                }
+                ArrayList<Entry> entries = new ArrayList<>();
+                
+                for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+                    for(int i = 0; i < entryList.getAllEntries().getCurrentSize()+1; i++)
+                    {
+                        Entry entry = entryList.getAllEntries().getEntry(i);
+                        if(entry != null && entry.getDate().equals(date))
+                        {
+                            entries.add(entry);  
+                        }
+                    }
+                }
+        
+                if (entries.size() == 0)
+                    System.out.println("\nCould not find any entries within that timeframe.");
+                else if (entries.size() == 1) {
+                    System.out.println("\n------------------------\n\nDisplaying the entry within that timeframe:");
+                    for (Entry entry : entries)
+                        System.out.println("\n" + entry);
+                    System.out.print("\nHit enter to return to display menu.");
+                    input.nextLine();
+                }
+                else {
+                    System.out.println("\nDisplaying the " + entries.size() + " entries for that timeframe:");
+                    for (Entry entry : entries)
+                        System.out.println("\n" + entry);
+                    System.out.print("\nHit enter to return to display menu.");
+                    input.nextLine();
+                }
+            }
+            else if (userInput.toUpperCase().equals("Q")) {
+                proceed = false;
+            }
+            else {
+                System.out.println("Please enter a valid option");
             }
         }
-
-        if (entriesAtDate.size() == 0)
-            System.out.println("\nCould not find any entries at that date.");
-        else if (entriesAtDate.size() == 1)
-            System.out.println("\n------------------------\n\nDisplaying the entry for that date:");
-        else
-            System.out.println("\nDisplaying the " + entriesAtDate.size() + " entries for that date:");
-        
-        for (Entry entry : entriesAtDate)
-            System.out.println("\n" + entry);
-
-        System.out.print("\nHit enter to return to main menu.");
-        input.nextLine();
     }
 
     /**
