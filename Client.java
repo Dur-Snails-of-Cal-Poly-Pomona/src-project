@@ -365,7 +365,7 @@ public class Client
                 "Display Options:\n" +
                 "Type \"1\" To display today's log entry\n" +
                 "Type \"2\" To display a specific day's log entry\n" +
-                "Type \"3\" To display a range of entries between two dates (inclusive)\n" +
+                "Type \"3\" To display entries between two dates (inclusive)\n" +
                 "Type \"Q\" To go back to main menu"
             );
 
