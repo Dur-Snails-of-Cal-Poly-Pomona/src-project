@@ -404,7 +404,8 @@ public class Client
     }
 
     /**
-     * Functionality for when user chooses to display entries: prompts the user for a date and displays any entries at that date
+     * Functionality for when user chooses to display entries: prompts the userto display one or multiple
+     * dates of entries, then prompts user for date or date range and displays entries fitting input
      * @param input the Scanner object to read user input
      * @param entryList the EntryList storing all the entries
      */
