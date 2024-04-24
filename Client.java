@@ -116,7 +116,7 @@ public class Client
 
     /**
      * Functionality for handling editing an existing entry: allows user to add/subtract visitors, 
-     * set visitor count, add donations to entry, clear all donations, change the date of the entry,
+     * set visitor count, add donations to entry, remove donations, change the date of the entry,
      * remove the entry, or exit to main menu.
      * 
      * @param date the date of the entry being edited
@@ -137,7 +137,7 @@ public class Client
                 "Type \"1\" To add or subtract number to visitors\n" +
                 "Type \"2\" To set visitor count\n" +
                 "Type \"3\" To add donation(s)\n" +
-                "Type \"4\" To clear all donations\n" +
+                "Type \"4\" To remove donation(s)\n" +
                 "Type \"5\" To change date\n" +
                 "Type \"6\" To remove entry\n" +
                 "Type \"Q\" To go back to main menu"
@@ -198,17 +198,70 @@ public class Client
                     if (donation != "") entry.getDonations().add(donation);
                 }
 
-                System.out.print("\nAdded donations to entry");
-            } else if (userInput.equals("4")) {
-                System.out.println("\nAre you sure you want to clear all donations? (Y or Yes for yes, anything else for no)");
-                String userChoice = input.nextLine();
-                if (userChoice.toUpperCase().equals("YES") || userChoice.toUpperCase().equals("Y")) {
-                    entry.getDonations().clear();
-                    System.out.print("\nCleared all donations for this entry ");
-                } else {
-                    System.out.println("\nDonations were not cleared for this entry.");
+                if (allDonations.length > 0)
+                    System.out.print("\nAdded donations to entry");
+                 else {
+                    System.out.println("\n Didn't add any donations.");
                     saveAfter = false;
+                 }
+            } else if (userInput.equals("4")) {
+                System.out.println("\nDonations:");
+                Object[] donations = entry.getDonations().toArray();
+                String[] donationStrings = new String[donations.length];
+                for (int i = 0; i < donations.length; i++) {
+                    donationStrings[i] = donations[i].toString();
+                    System.out.println("" + (i + 1) + ": " + donationStrings[i]);
                 }
+
+                System.out.print("\nEnter the number(s) of the donation(s) you want to remove, separated by commas (or \"All\" to clear all): ");
+
+                ArrayList<Integer> donationIndices = null;
+                do {
+                    String indicesInput = input.nextLine().trim();
+                    donationIndices = new ArrayList<>();
+                    if (indicesInput == "")
+                        break;
+                    if (indicesInput.toUpperCase().equals("ALL")) {
+                        for (int i = 0; i < donationStrings.length; i++)
+                            donationIndices.add(i + 1);
+                        break;
+                    }
+                    for (String indexInput : indicesInput.split(",")) {
+                        if (indexInput.trim() == "")
+                            continue;
+                        Integer donationIndex;
+                        try {
+                            donationIndex = Integer.parseInt(indexInput.trim());
+                        } catch (NumberFormatException e) {
+                            System.out.print("Please input numbers spaced by commas, or \"All\": ");
+                            donationIndices = null;
+                            break;
+                        }
+                        if (donationIndex < 1 || donationIndex > donationStrings.length) {
+                            System.out.print("Please input numbers from 1 to " + donationStrings.length + ": ");
+                            donationIndices = null;
+                            break;
+                        }
+                        if (!donationIndices.contains(donationIndex))
+                            donationIndices.add(donationIndex);
+                    }
+                } while (donationIndices == null);
+                
+                if (donationIndices.size() == 0) {
+                    System.out.println("\nDidn't remove any donations.");
+                    saveAfter = false;
+                } else {
+                    for (int i : donationIndices) {
+                        String donation = donationStrings[i - 1];
+                        entry.getDonations().remove(donation);
+                    }
+                }
+
+                if (donationIndices.size() == 1)
+                    System.out.print("\nRemoved donation from entry");
+                else if (donationIndices.size() > 1)
+                    System.out.print("\nRemoved " + donationIndices.size() + " donations from entry");
+                
             } else if (userInput.equals("5")) {
                 System.out.print("\nEnter a new date in the format MM/DD/YYYY, leave blank for today: ");
 
@@ -261,7 +314,6 @@ public class Client
                     }
                 }
                 
-                // TODO: Change date (if new date already has an entry: prompt to merge, replace, or cancel)
             } else if (userInput.equals("6")) {
                 System.out.println("\nAre you sure you want to remove this element? (Y or Yes for yes, anything else for no)");
                 String userChoice = input.nextLine();
@@ -382,7 +434,7 @@ public class Client
                         todayEntry = entry;
                     }
                 }
-                if (!todayEntry.equals(null)) {
+                if (todayEntry != null) {
                     System.out.println("\n------------------------\n\nDisplaying the entry for today:\n\n" + todayEntry);
                     System.out.print("\nHit enter to return to display menu.");
                     input.nextLine();
