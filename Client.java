@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Client
 {
     final static String DEFAULT_FILE_NAME = "entries.txt";
+    final static String OUTPUT_CSV_FILE_NAME = "entries.csv";
 
     public static void main(String args[])
     {
@@ -28,17 +29,18 @@ public class Client
         boolean proceed = true;
         String userInput = "";
 
-        String filename;
         System.out.print("Please input a file name (ending in .txt) to create/edit (leave blank for \"" + DEFAULT_FILE_NAME + "\"): ");
-        filename = input.nextLine().trim();
-        while (filename.length() < 4 || !filename.substring(filename.length() - 4).equals(".txt")) {
+        String filename = null;
+        do {
+            filename = input.nextLine().trim();
             if (filename.length() == 0) {
                 filename = "entries.txt";
             } else {
+                if (filename.length() < 4 || !filename.substring(filename.length() - 4).equals(".txt"))
+                filename = null;
                 System.out.print("File name must end in \".txt\", please try again: ");
-                filename = input.nextLine().trim();
             }
-        }
+        } while (filename == null);
 
         EntryList entryList = new EntryList(filename);
 
@@ -153,15 +155,16 @@ public class Client
                     String numVisitorsInput = input.nextLine().trim();
                     if (numVisitorsInput.length() == 0)
                         numVisitorsToAdd = 1;
-                    else try {
-                        numVisitorsToAdd = Integer.parseInt(numVisitorsInput);
-                        if (entry.getNumVisitors() + numVisitorsToAdd < 0) {
-                            System.out.print("Unable to set visitors to negative (" + (entry.getNumVisitors() + numVisitorsToAdd) + ") (currently " + entry.getNumVisitors() + "): ");
-                            numVisitorsToAdd = null;
+                    else 
+                        try {
+                            numVisitorsToAdd = Integer.parseInt(numVisitorsInput);
+                            if (entry.getNumVisitors() + numVisitorsToAdd < 0) {
+                                System.out.print("Unable to set visitors to negative (" + (entry.getNumVisitors() + numVisitorsToAdd) + ") (currently " + entry.getNumVisitors() + "): ");
+                                numVisitorsToAdd = null;
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.print("Please input only a number, no other characters: ");
                         }
-                    } catch (NumberFormatException e) {
-                        System.out.print("Please input only a number, no other characters: ");
-                    }
                 } while (numVisitorsToAdd == null);
 
                 entry.setNumVisitors(entry.getNumVisitors() + numVisitorsToAdd);
@@ -174,15 +177,16 @@ public class Client
                     String numVisitorsInput = input.nextLine().trim();
                     if (numVisitorsInput.length() == 0)
                         numVisitors = 1;
-                    else try {
-                        numVisitors = Integer.parseInt(numVisitorsInput);
-                        if (numVisitors < 0) {
-                            System.out.print("Please input a non-negative number: ");
-                            numVisitors = null;
+                    else 
+                        try {
+                            numVisitors = Integer.parseInt(numVisitorsInput);
+                            if (numVisitors < 0) {
+                                System.out.print("Please input a non-negative number: ");
+                                numVisitors = null;
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.print("Please input only a number, no other characters: ");
                         }
-                    } catch (NumberFormatException e) {
-                        System.out.print("Please input only a number, no other characters: ");
-                    }
                 } while (numVisitors == null);
 
                 entry.setNumVisitors(numVisitors);
@@ -541,7 +545,7 @@ public class Client
      * @param entryList the EntryList storing all the entries
      */
     public static void getCSV(Scanner input, EntryList entryList) {
-        File csvFile = new File("entries.csv");
+        File csvFile = new File(OUTPUT_CSV_FILE_NAME);
         try {
             FileWriter fileWriter = new FileWriter(csvFile, false);
 
