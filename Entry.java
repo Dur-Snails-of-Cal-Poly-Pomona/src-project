@@ -107,8 +107,9 @@ public class Entry implements Serializable {
             " o Number of Visitors: " + numVisitors + "\n" +
             " o Donations:";
 
-        for (Object donation : donations.toArray())
-            output += "\n   - " + donation.toString();
+        Object[] donationArray = donations.toArray();
+        for (int i = 0; i < donationArray.length; i++)
+            output += "\n   - " + donationArray[i].toString();
 
         return output;
     }

@@ -36,9 +36,10 @@ public class Client
             if (filename.length() == 0) {
                 filename = "entries.txt";
             } else {
-                if (filename.length() < 4 || !filename.substring(filename.length() - 4).equals(".txt"))
-                filename = null;
-                System.out.print("File name must end in \".txt\", please try again: ");
+                if (filename.length() < 4 || !filename.substring(filename.length() - 4).equals(".txt")) {
+                    filename = null;
+                    System.out.print("File name must end in \".txt\", please try again: ");
+                }
             }
         } while (filename == null);
 
@@ -46,7 +47,7 @@ public class Client
 
         while(proceed)
         {
-            System.out.println("\n----------------\n");
+            System.out.println("\n------------------------------\n");
             System.out.println("Select an option:");
             System.out.println("Type \"1\" To create, edit, or remove an entry.");
             System.out.println("Type \"2\" To display an entry or entries.");
@@ -440,7 +441,7 @@ public class Client
                     }
                 }
                 if (todayEntry != null) {
-                    System.out.println("\n------------------------\n\nDisplaying the entry for today:\n\n" + todayEntry);
+                    System.out.println("\n------------------------------\n\nDisplaying the entry for today:\n\n" + todayEntry);
                     System.out.print("\nHit enter to return to display menu.");
                     input.nextLine();
                 }
@@ -466,7 +467,7 @@ public class Client
                 if (entriesAtDate.size() == 0)
                     System.out.println("\nCould not find any entries at that date.");
                 else if (entriesAtDate.size() == 1) {
-                    System.out.println("\n------------------------\n\nDisplaying the entry for that date:");
+                    System.out.println("\n------------------------------\n\nDisplaying the entry for that date:");
                     for (Entry entry : entriesAtDate)
                         System.out.println("\n" + entry);
                     System.out.print("\nHit enter to return to display menu.");
@@ -516,7 +517,7 @@ public class Client
                 if (entries.size() == 0)
                     System.out.println("\nCould not find any entries within that timeframe.");
                 else if (entries.size() == 1) {
-                    System.out.println("\n------------------------\n\nDisplaying the entry within that timeframe:");
+                    System.out.println("\n------------------------------\n\nDisplaying the entry within that timeframe:");
                     for (Entry entry : entries)
                         System.out.println("\n" + entry);
                     System.out.print("\nHit enter to return to display menu.");
